@@ -6,7 +6,8 @@ Terraform module for creating a Google Cloud Storage bucket with optional lifecy
 
 - **Terraform:** >= 1.3.0
 - **Google Provider:** >= 7.0.0, < 8.0.0
-  - Versión restringida para evitar breaking changes. Usa `google_storage_bucket` que es estable en v7.x
+  - Restricted version to avoid breaking changes. Uses `google_storage_bucket` which is stable in v7.x.
+
 
 ## Usage
 

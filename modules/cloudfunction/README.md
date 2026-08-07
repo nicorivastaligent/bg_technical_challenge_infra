@@ -8,10 +8,11 @@ The service account must be created beforehand by the IAM module and passed in v
 
 - **Terraform:** >= 1.0
 - **Google Provider:** >= 7.0.0, < 8.0.0
-  - Versión restringida para evitar breaking changes. Usa `google_cloudfunctions2_function` y `google_storage_bucket_object` que son estables en v7.x
-  - **Nota técnica:** `google_storage_bucket_object` está deprecado pero funciona en v7.x. Se recomienda migrar a `google_storage_bucket_object_content` cuando se actualice a v8.x
+  - Restricted version to avoid breaking changes. Uses `google_cloudfunctions2_function` and `google_storage_bucket_object` which are stable in v7.x.
+  - **Technical note:** `google_storage_bucket_object` is deprecated but functional in v7.x. It is recommended to migrate to `google_storage_bucket_object_content` when updating to v8.x.
 - **Archive Provider:** >= 2.0
-  - Para empaquetar código fuente de funciones
+  - To package function source code.
+
 
 ## Prerequisites: Project Setup Module Required
 

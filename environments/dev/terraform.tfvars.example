@@ -1,6 +1,6 @@
-client                           = "taligent"
-project                          = "data-platform"
-environment                      = "dev"
-region                           = "us-central1"
-discover_gold_objects            = false
-force_destroy_functions_bucket   = true
+client                         = "taligent"
+project                        = "bg-technicall-challenge"
+environment                    = "dev"
+region                         = "us-central1"
+discover_objects               = false
+force_destroy_functions_bucket = true

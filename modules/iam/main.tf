@@ -43,47 +43,48 @@ resource "google_project_iam_member" "transform_sa_bq_job_user" {
   member  = "serviceAccount:${google_service_account.sa_transform.email}"
 }
 
-# Obtener los datos del proyecto actual para sacar el project_number
+# Get current project data to fetch project_number
 data "google_project" "project" {
-  project_id = var.project
+  project_id = var.gcp_project_id
 }
 
-# Permiso para invocar Cloud Functions desde Workflows
+# Permission to invoke Cloud Functions from Workflows
 resource "google_project_iam_member" "workflow_invoker" {
   project = var.gcp_project_id
   role    = "roles/run.invoker"
   member  = "serviceAccount:${google_service_account.sa_transform.email}"
 }
 
-# Permiso para invocar Workflows desde Scheduler
+# Permission to invoke Workflows from Scheduler
 resource "google_project_iam_member" "scheduler_workflow_invoker" {
   project = var.gcp_project_id
   role    = "roles/workflows.invoker"
   member  = "serviceAccount:${google_service_account.sa_transform.email}"
 }
 
-# ── Permisos para la Service Account por defecto de Compute Engine (Usada en el Build de GCF v2) ──
+# ── Permissions for Default Compute Engine Service Account (Used in GCF v2 Build) ──
 
-# Permiso para escribir logs en Cloud Logging
+# Permission to write logs to Cloud Logging
 resource "google_project_iam_member" "compute_logs_writer" {
-  project = var.project
+  project = var.gcp_project_id
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
 }
 
-# Permiso para leer objetos de Cloud Storage (ZIPs del código fuente)
+# Permission to read Cloud Storage objects (Source code ZIPs)
 resource "google_project_iam_member" "compute_storage_viewer" {
-  project = var.project
+  project = var.gcp_project_id
   role    = "roles/storage.objectViewer"
   member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
 }
 
-# Permiso para guardar las imágenes del contenedor en Artifact Registry
+# Permission to store container images in Artifact Registry
 resource "google_project_iam_member" "compute_artifact_writer" {
-  project = var.project
+  project = var.gcp_project_id
   role    = "roles/artifactregistry.writer"
   member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
 }
+
 
 # ── SA to use CI/CD with GitHub Actions ──
 
@@ -91,18 +92,18 @@ resource "google_project_iam_member" "compute_artifact_writer" {
 resource "google_service_account" "github_actions"{
   account_id = "github-actions-deployer"
   display_name = "Github Actions Deployer SA"
-  project = var.project
+  project = var.gcp_project_id
 }
 
 # 2. Cloud Functions Deploy and modify permissions
 resource "google_project_iam_member" "github_actions_cf_developer" {
-  project = var.project 
+  project = var.gcp_project_id 
   role = "roles/cloudfunctions.developer"
   member = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
 resource "google_project_iam_member" "github_actions_sa_user"{
-  project = var.project
+  project = var.gcp_project_id
   role = "roles/iam.serviceAccountUser"
   member = "serviceAccount:${google_service_account.github_actions.email}"
 }
@@ -111,7 +112,7 @@ resource "google_project_iam_member" "github_actions_sa_user"{
 
 # 1. Create Identity pool
 resource "google_iam_workload_identity_pool" "github_pool" {
-  project                   = var.project
+  project                   = var.gcp_project_id
   workload_identity_pool_id = "github-actions-pool"
   display_name              = "GitHub Actions Pool"
   description               = "Identity pool for GitHub Actions"
@@ -119,7 +120,7 @@ resource "google_iam_workload_identity_pool" "github_pool" {
 
 # 2. Create provider
 resource "google_iam_workload_identity_pool_provider" "github_provider" {
-  project                            = var.project
+  project                            = var.gcp_project_id
   workload_identity_pool_id          = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
   workload_identity_pool_provider_id = "github-actions-provider"
   display_name                       = "GitHub Actions Provider"
