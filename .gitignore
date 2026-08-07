@@ -1,0 +1,24 @@
+# Local .terraform directories
+**/.terraform/
+    
+# .tfstate files (Contienen estado e información sensible)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Excluir asignaciones de variables con credenciales/sensibles
+*.tfvars
+!*.tfvars.example
+
+# Archivos temporales o zips locales
+**/tmp/
+*.zip
+
+ # Archivos de SO e IDEs
+.DS_Store
+.vscode/
+.idea/
